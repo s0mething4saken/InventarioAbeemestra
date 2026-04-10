@@ -120,7 +120,7 @@ def main():
         entrada.grid(row=0, column=i*2+1, padx=4)
         entradas[campo] = entrada
 
-    cols_prod = ("ID", "SKU", "Nombre", "Presentación","Cantidad","Observaciones" "Precio", "Caducidad", "Código de barras", "Stock")
+    cols_prod = ("ID", "SKU", "Nombre", "Presentación","Stock", "Precio", "Caducidad", "Código de barras", "Observaciones")
     tabla_prod = ttk.Treeview(tab_productos, columns=cols_prod, show="headings", height=14)
     for col in cols_prod:
         tabla_prod.heading(col, text=col)

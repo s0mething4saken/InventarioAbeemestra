@@ -13,6 +13,21 @@ def construir_ventana():
     ventana.title("Inventario")
     ventana.geometry("1400x750")
 
+    # ── ESTILOS GLOBALES/ AUMENTO DE LETRA PARA MEJOR VISIBILIDAD ─────────────────────────────────────
+    fuente = ("Arial", 12)  #tamaño de letra que se desea observar
+
+    ventana.option_add("*Font", fuente)  # aplica a todos los widgets tk
+
+    estilo = ttk.Style()
+    estilo.configure(".", font=fuente)                  # todos los widgets ttk
+    estilo.configure("Treeview", font=fuente, rowheight=28)  # tabla
+    estilo.configure("Treeview.Heading", font=("Arial", 12, "bold"))  # encabezados tabla
+    estilo.configure("TCombobox", font=fuente)
+    estilo.configure("TNotebook.Tab", font=fuente)      # pestañas
+
+    notebook = ttk.Notebook(ventana)
+    # ... resto del código igual
+
     notebook = ttk.Notebook(ventana)
     notebook.pack(fill="both", expand=True, padx=10, pady=10)
 
@@ -23,6 +38,7 @@ def construir_ventana():
     frame_form = tk.LabelFrame(tab_productos, text="Nuevo producto", padx=10, pady=10)
     frame_form.pack(fill="x", padx=10, pady=5)
 
+    # ── BARRA DE INSERCIÓN DE PRODUCTOS ────────────────────────
     campos = ["SKU", "Nombre", "Presentación", "Cantidad", "Observaciones", "Precio", "Caducidad", "Código de barras"]
     entradas = {}
     for i, campo in enumerate(campos):
@@ -30,12 +46,41 @@ def construir_ventana():
         entrada = tk.Entry(frame_form, width=14)
         entrada.grid(row=0, column=i*2+1, padx=4)
         entradas[campo] = entrada
-
-    cols_prod = ("ID", "SKU", "Nombre", "Presentación", "Stock", "Precio", "Caducidad", "Código de barras", "Observaciones")
+    
+    # ── TABLA DE VISTA DE PRODUCTOS ────────────────────────
+    cols_prod = ("ID", "SKU", "Nombre", "Presentación", "Stock", "Precio","Precio total producto" ,"Caducidad", "Código de barras", "Observaciones")
     tabla_prod = ttk.Treeview(tab_productos, columns=cols_prod, show="headings", height=14)
+    #MODIFICACIÓN DE TAMAÑOS DE COLUMNAS INDEPENDIENTES
+    anchos = {
+        "ID": 50,
+        "SKU": 70,
+        "Nombre": 160,
+        "Presentación": 120,
+        "Stock": 60,
+        "Precio": 80,
+        "Precio total producto": 80,
+        "Caducidad": 100,
+        "Código de barras": 130,
+        "Observaciones": 180
+    }
+    
+    justificaciones = {
+        "ID": "center",
+        "SKU": "center",
+        "Nombre": "w",
+        "Presentación": "center",
+        "Stock": "center",
+        "Precio": "center",
+        "Precio total producto": "center",
+        "Caducidad": "center",
+        "Código de barras": "center",
+        "Observaciones": "w"
+    }
+
     for col in cols_prod:
-        tabla_prod.heading(col, text=col)
-        tabla_prod.column(col, width=110)
+        tabla_prod.heading(col, text=col, anchor=justificaciones.get(col))
+        tabla_prod.column(col, width=anchos.get(col, 110), anchor=justificaciones.get(col))
+
     tabla_prod.pack(fill="both", expand=True, padx=10, pady=5)
 
     def cargar_productos():
@@ -129,10 +174,10 @@ def construir_ventana():
     frame_cards = tk.Frame(tab_dash)
     frame_cards.pack(fill="x", padx=10, pady=10)
 
-    lbl_total_prod  = tk.Label(frame_cards, text="", font=("Arial", 13), relief="groove", padx=20, pady=10)
-    lbl_total_stock = tk.Label(frame_cards, text="", font=("Arial", 13), relief="groove", padx=20, pady=10)
-    lbl_entradas    = tk.Label(frame_cards, text="", font=("Arial", 13), relief="groove", padx=20, pady=10, fg="green")
-    lbl_salidas     = tk.Label(frame_cards, text="", font=("Arial", 13), relief="groove", padx=20, pady=10, fg="red")
+    lbl_total_prod  = tk.Label(frame_cards, text="", font=("Arial", 16), relief="groove", padx=20, pady=10)
+    lbl_total_stock = tk.Label(frame_cards, text="", font=("Arial", 16), relief="groove", padx=20, pady=10)
+    lbl_entradas    = tk.Label(frame_cards, text="", font=("Arial", 16), relief="groove", padx=20, pady=10, fg="green")
+    lbl_salidas     = tk.Label(frame_cards, text="", font=("Arial", 16), relief="groove", padx=20, pady=10, fg="red")
 
     lbl_total_prod.grid(row=0, column=0, padx=8)
     lbl_total_stock.grid(row=0, column=1, padx=8)

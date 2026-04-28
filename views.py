@@ -11,9 +11,12 @@ from models import (
 def construir_ventana():
     ventana = tk.Tk()
     ventana.title("Inventario")
-    ventana.geometry("1400x750")
+    ventana.state("zoomed")
 
-    # ── ESTILOS GLOBALES/ AUMENTO DE LETRA PARA MEJOR VISIBILIDAD ─────────────────────────────────────
+    #ícono de programa
+    ventana.iconbitmap("icono.ico")
+
+    # ── ESTILOS GLOBALES─────────────────────────────────────
     fuente = ("Arial", 12)  #tamaño de letra que se desea observar
 
     ventana.option_add("*Font", fuente)  # aplica a todos los widgets tk
@@ -26,7 +29,6 @@ def construir_ventana():
     estilo.configure("TNotebook.Tab", font=fuente)      # pestañas
 
     notebook = ttk.Notebook(ventana)
-    # ... resto del código igual
 
     notebook = ttk.Notebook(ventana)
     notebook.pack(fill="both", expand=True, padx=10, pady=10)
@@ -39,26 +41,27 @@ def construir_ventana():
     frame_form.pack(fill="x", padx=10, pady=5)
 
     # ── BARRA DE INSERCIÓN DE PRODUCTOS ────────────────────────
-    campos = ["SKU", "Nombre", "Presentación", "Cantidad", "Observaciones", "Precio", "Caducidad", "Código de barras"]
+    campos = ["SKU", "Nombre","Categoría","Presentación", "Cantidad", "Observaciones", "Precio", "Caducidad", "Código de barras"]
     entradas = {}
     for i, campo in enumerate(campos):
         tk.Label(frame_form, text=campo).grid(row=0, column=i*2)
-        entrada = tk.Entry(frame_form, width=14)
+        entrada = tk.Entry(frame_form, width=10)
         entrada.grid(row=0, column=i*2+1, padx=4)
         entradas[campo] = entrada
     
     # ── TABLA DE VISTA DE PRODUCTOS ────────────────────────
-    cols_prod = ("ID", "SKU", "Nombre", "Presentación", "Stock", "Precio","Precio total producto" ,"Caducidad", "Código de barras", "Observaciones")
+    cols_prod = ("ID", "SKU", "Nombre","Categoría", "Presentación", "Stock", "Precio Unidad","Precio total" ,"Caducidad", "Código de barras", "Observaciones")
     tabla_prod = ttk.Treeview(tab_productos, columns=cols_prod, show="headings", height=14)
     #MODIFICACIÓN DE TAMAÑOS DE COLUMNAS INDEPENDIENTES
     anchos = {
-        "ID": 50,
-        "SKU": 70,
+        "ID": 40,
+        "SKU": 50,
         "Nombre": 160,
-        "Presentación": 120,
-        "Stock": 60,
-        "Precio": 80,
-        "Precio total producto": 80,
+        "Categoría":100,
+        "Presentación": 100,
+        "Stock": 50,
+        "Precio Unidad": 100,
+        "Precio total": 80,
         "Caducidad": 100,
         "Código de barras": 130,
         "Observaciones": 180
@@ -68,10 +71,11 @@ def construir_ventana():
         "ID": "center",
         "SKU": "center",
         "Nombre": "w",
+        "Categoría": "center",
         "Presentación": "center",
         "Stock": "center",
-        "Precio": "center",
-        "Precio total producto": "center",
+        "Precio Unidad": "center",
+        "Precio total": "center",
         "Caducidad": "center",
         "Código de barras": "center",
         "Observaciones": "w"
@@ -80,26 +84,42 @@ def construir_ventana():
     for col in cols_prod:
         tabla_prod.heading(col, text=col, anchor=justificaciones.get(col))
         tabla_prod.column(col, width=anchos.get(col, 110), anchor=justificaciones.get(col))
-
     tabla_prod.pack(fill="both", expand=True, padx=10, pady=5)
+
+    #──Declaración de colores para categorías ──────────────────────────────────────
+    colores_categoria = {
+        "Miel":              "#fff5a0",
+        "Derivados Miel":    "#ffdf80",
+        "Dulceria":          "#ffcba0",
+        "Derivados Colmena": "#b8ffb0",
+        "Embellece":         "#f0b0ff",
+        "Kits":              "#dfffb0"
+    }
+
+    #──Declaración de colores para categorías ──────────────────────────────────────
+    for categoria, color in colores_categoria.items():
+        tag = categoria.lower().replace(" ", "_")
+        tabla_prod.tag_configure(tag, background=color)
 
     def cargar_productos():
         for fila in tabla_prod.get_children():
             tabla_prod.delete(fila)
         for p in obtener_productos():
-            tabla_prod.insert("", tk.END, values=p)
+            categoria = str(p[3])
+            tag = categoria.lower().replace(" ", "_")
+            tabla_prod.insert("", tk.END, values=p, tags=(tag,))
 
     def guardar_producto():
         agregar_producto(
-            entradas["SKU"].get(), entradas["Nombre"].get(),
-            entradas["Presentación"].get(), entradas["Cantidad"].get(),
-            entradas["Observaciones"].get(), entradas["Precio"].get(),
+            entradas["SKU"].get(), entradas["Nombre"].get(), entradas["Categoría"].get(),
+            entradas["Presentación"].get(), int (entradas["Cantidad"].get() or 0),
+            entradas["Observaciones"].get(), float (entradas["Precio"].get() or 0),
             entradas["Caducidad"].get(), entradas["Código de barras"].get()
         )
         for e in entradas.values():
             e.delete(0, tk.END)
         cargar_productos()
-
+    
     def eliminar_seleccionado():
         sel = tabla_prod.selection()
         if not sel:
@@ -108,42 +128,55 @@ def construir_ventana():
         id_prod = tabla_prod.item(sel[0])["values"][0]
         eliminar_producto(id_prod)
         cargar_productos()
-
-    tk.Button(frame_form, text="Agregar", command=guardar_producto, bg="#4CAF50", fg="white").grid(row=0, column=16, padx=8)
+    
+    #── Botones agregar y eliminar productos ──────────────────────────────────────
+    tk.Button(frame_form, text="Agregar", command=guardar_producto, bg="#4CAF50", fg="white").grid(row=0, column=20, padx=8)
     tk.Button(tab_productos, text="Eliminar seleccionado", command=eliminar_seleccionado, bg="#f44336", fg="white").pack(pady=4)
 
     # ── TAB MOVIMIENTOS ──────────────────────────────────────
     tab_mov = tk.Frame(notebook)
     notebook.add(tab_mov, text="Movimientos")
 
+    #──Frame de registro de movimientos ──────────────────────────────────────
     frame_mov = tk.LabelFrame(tab_mov, text="Registrar movimiento", padx=10, pady=10)
     frame_mov.pack(fill="x", padx=10, pady=5)
 
+    #──Text box para registrar SKU ──────────────────────────────────────
     tk.Label(frame_mov, text="SKU").grid(row=0, column=0)
     entry_sku = tk.Entry(frame_mov, width=8)
     entry_sku.grid(row=0, column=1, padx=4)
 
+    #──Text box para registrar ID producto ──────────────────────────────────────
     tk.Label(frame_mov, text="Producto ID").grid(row=0, column=2)
     entry_pid = tk.Entry(frame_mov, width=8)
     entry_pid.grid(row=0, column=3, padx=4)
 
-    tk.Label(frame_mov, text="Tipo").grid(row=0, column=4)
+    #──Text box para registrar categoría ──────────────────────────────────────
+    tk.Label(frame_mov, text="Categoría").grid(row=0, column=4)
+    entry_pid = tk.Entry(frame_mov, width=8)
+    entry_pid.grid(row=0, column=5, padx=4)
+
+    #──Text box para registrar Tipo (entrada/salida) ──────────────────────────────────────
+    tk.Label(frame_mov, text="Tipo").grid(row=0, column=6)
     tipo_var = tk.StringVar(value="entrada")
-    ttk.Combobox(frame_mov, textvariable=tipo_var, values=["entrada", "salida"], width=10).grid(row=0, column=5, padx=4)
+    ttk.Combobox(frame_mov, textvariable=tipo_var, values=["entrada", "salida"], width=10).grid(row=0, column=7, padx=4)
 
-    tk.Label(frame_mov, text="Cantidad").grid(row=0, column=6)
+    #──Text box para registrar Cantidad ──────────────────────────────────────
+    tk.Label(frame_mov, text="Cantidad").grid(row=0, column=8)
     entry_cant = tk.Entry(frame_mov, width=8)
-    entry_cant.grid(row=0, column=7, padx=4)
+    entry_cant.grid(row=0, column=9, padx=4)
 
-    tk.Label(frame_mov, text="Nota").grid(row=0, column=8)
+    #──Text box para registrar Nota ──────────────────────────────────────
+    tk.Label(frame_mov, text="Nota").grid(row=0, column=10)
     entry_nota = tk.Entry(frame_mov, width=20)
-    entry_nota.grid(row=0, column=9, padx=4)
+    entry_nota.grid(row=0, column=11, padx=4)
 
-    cols_mov = ("SKU", "ID", "Producto", "Tipo", "Cantidad", "Fecha", "Nota")
+    #──Columnas de tabla de movimientos ──────────────────────────────────────
+    cols_mov = ("SKU", "ID", "Producto", "Categoria", "Tipo", "Cantidad", "Fecha", "Nota")
     tabla_mov = ttk.Treeview(tab_mov, columns=cols_mov, show="headings", height=16)
     for col in cols_mov:
         tabla_mov.heading(col, text=col)
-        tabla_mov.column(col, width=130)
+        tabla_mov.column(col, width=130, anchor = "c")
     tabla_mov.pack(fill="both", expand=True, padx=10, pady=5)
 
     def cargar_movimientos():
@@ -164,8 +197,9 @@ def construir_ventana():
             e.delete(0, tk.END)
         cargar_movimientos()
         cargar_productos()
-
-    tk.Button(frame_mov, text="Registrar", command=guardar_movimiento, bg="#2196F3", fg="white").grid(row=0, column=11, padx=8)
+    
+    #──Botón para registrar movimiento ──────────────────────────────────────
+    tk.Button(frame_mov, text="Registrar", command=guardar_movimiento, bg="#2196F3", fg="white").grid(row=0, column=13, padx=8)
 
     # ── TAB DASHBOARD ────────────────────────────────────────
     tab_dash = tk.Frame(notebook)
@@ -198,8 +232,8 @@ def construir_ventana():
         datos = obtener_stock_por_producto()
         ax.clear()
         if datos:
-            nombres = [d[0][:15] for d in datos]
-            stocks  = [d[1] for d in datos]
+            nombres = [str(d[0])[:15] for d in datos]
+            stocks  = [int(d[1] or 0) for d in datos]  # fuerza todo a entero
             colores = ["#4CAF50" if s > 5 else "#f44336" for s in stocks]
             ax.barh(nombres, stocks, color=colores)
             ax.set_xlabel("Stock")

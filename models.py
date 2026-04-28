@@ -13,7 +13,12 @@ def agregar_producto(sku, nombre, presentacion, stock, observaciones, precio, ca
 
 def obtener_productos():
     conn = conectar()
-    filas = conn.execute("SELECT * FROM productos").fetchall()
+    filas = conn.execute("""
+                        SELECT
+                         id, sku, nombre, categoria, presentacion, stock,
+                         precio, precio * stock as precio_Total, caducidad,
+                         barcode, observaciones
+                         FROM productos""").fetchall()
     conn.close()
     return filas
 
@@ -41,7 +46,7 @@ def registrar_movimiento(sku, producto_id, tipo, cantidad, nota=""):
 def obtener_movimientos():
     conn = conectar()
     filas = conn.execute("""
-        SELECT p.sku, m.id, p.nombre, m.tipo, m.cantidad, m.fecha, m.nota
+        SELECT p.sku, m.id, p.nombre, p.categoria, m.tipo, m.cantidad, m.fecha, m.nota
         FROM movimientos m
         JOIN productos p ON m.producto_id = p.id
         ORDER BY m.fecha DESC

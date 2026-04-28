@@ -1,110 +1,110 @@
-Codigo,Nombre del producto,Presentacion,Cantidad en almacen,Observaciones,Precio Producto al Publico
-8204,Miel Multiflora 35 g,35 g,70,,25
-8142,Miel Mezquite 35 g,35 g,44,,25
-8129,Miel Acahual 35 g,35 g,72,,25
-8181,Miel Azahar 35 g,35 g,62,,25
-8273,Miel Manglar 35 g,35 g,70,,25
-8242,Miel Aguacate 35 g,35 g,57,,25
-8243,Miel Eucalipto 35 g,35 g,69,,25
-8247,Miel Dzidzilché 35 g,35 g,56,,25
-8274,Miel Chayotillo 35 g,35 g,38,,25
-8044,Miel Multiflora 300 g,300 g,34,,85
-8068,Miel Mezquite 300 g,300 g,34,,85
-8082,Miel Acahual 300 g,300 g,25,,85
-8174,Miel Azahar 300 g,300 g,16,,85
-8099,Miel Manglar 300 g,300 g,29,,85
-8235,Miel Aguacate 300 g,300 g,30,,85
-8244,Miel Eucalipto 300 g,300 g,8,,85
-8248,Miel Dzidzilché 300 g,300 g,31,,85
-8275,Miel Chayotillo 300 g,300 g,0,Falta Kardex,85
-8051,Miel Multiflora 600 g,600 g,65,,170
-8075,Miel Mezquite 600 g,600 g,17,,170
-8112,Miel Acahual 600 g,600 g,16,,170
-8167,Miel Azahar 600 g,600 g,26,,170
-8266,Miel Manglar 600 g,600 g,18,,170
-8228,Miel Aguacate 600 g,600 g,28,,170
-8245,Miel Eucalipto 600 g,600 g,18,,170
-8249,Miel Dzidzilché 600 g,600 g,17,,170
-8276,Miel Chayotillo 600 g,600 g,2,,170
-8198,Miel Multiflora 1300 g,1300 g,13,,300
-8136,Miel Mezquite 1300 g,1300 g,12,,300
-8105,Miel Acahual 1300 g,1300 g,24,,300
-8150,Miel Azahar 1300 g,1300 g,0,,300
-8259,Miel Manglar 1300g,1300g,7,,300
-8211,Miel Aguacate 1300 g,1300 g,26,,300
-8246,Miel Eucalipto 1300 g,1300 g,10,,300
-8250,Miel Dzidzilché 1300 g,1300 g,8,,300
-8277,Miel Chayotillo 1300 g,1300 g,0,,300
-8692,Miel en Panal 350 g,350 g,19,,130
-8693,Miel Melipona 25 ml,25 ml,0,Falta Kardex,70
-8690,Jalea Real 30 g,30 g,0,Falta Kardex,120
-8794,Panal en Charola,100 g - 400 g,8,No tiene costo fijo,100
-8732,Miel en Pet 1 L,1350 g,3,,0
-8733,PET 1/2,650 g,2,,0
-8310,Beenergético 35 g,35 g,115,,40
-8037,Beenergético 150 g,150 g,41,,125
-8303,Beenergético 300 g,300 g,13,,240
-8040,Choco-bee Beenergetico 35 g,35 g,51,,45
-8039,Choco-bee Beenergetico 150 g,150 g,10,,130
-8038,Choco-bee Beenergetico 300 g,300 g,25,,250
-8297,Chamiel 35 g,35 g,29,,25
-8703,Chamiel 150 g,150 g,34,,55
-8020,Chamiel 290 g,290 g,17,,80
-8280,Chamiel 500 g,500 g,0,Falta Kardex,150
-8725,Chamiel 1100 g,1100 g,0,Falta Kardex,290
-8334,Mermymiel Guayaba 35 g,35 g,144,,25
-8365,Mermymiel fresa 35 g,35 g,112,,25
-8389,Mermymiel piña 35 g,35 g,95,,25
-8419,Mermymiel M.C. 35 g,35 g,49,,25
-8327,Mermymiel Guayaba 150 g,150 g,35,,60
-8358,Mermymiel fresa 150 g,150 g,62,,60
-8372,Mermymiel Piña 150 g,150 g,50,,60
-8402,Mermymiel M.C. 150 g,150 g,56,,60
-8777,Mermymiel Navideña 150 g,150g,42,,60
-8013,Mermymiel Guayaba 300 g,300 g,37,,100
-8341,Mermymiel fresa 300 g,300 g,18,,100
-8006,Mermymiel Piña 300g,300g,103,,100
-8396,Mermymiel M.C. 300 g,300 g,30,,100
-8778,Mermymiel Navideña 300 g,300 g,67,,110
-8689,Gomitas 100 g,100 g,54,,30
-8694,Paletas Miel,Pza,969,,5
-8695,Paletas Propoleo,Pza,589,,5
-8696,Perlas de miel 100 g,100 g,64,,30
-8710,Perlas Propoleo 100 g,100 g,28,,30
-8697,Popotes Miel,Pza,74,,5
-8712,Popotes propoleo,Pza,0,,5
-8713,Popotes miel con chile,Pza,323,,5
-8714,Ventas a granel perlas propoleo 1 Kg,Kg,20,,0
-8556,Propóleo Spray 30 ml,30 ml,1,,100
-8698,Propymiel 200 g,200 g,7,,140
-8549,Propóleo Gotas 30 ml,30 ml,14,,100
-8426,Polen 170 g,170 g,0,Falta Kardex,130
-8433,Polen 85 g,85 g,4,,70
-8440,Apicream corporal 60 ml,60 ml,0,Descontinuado,60
-8457,Apicream corporal 250 ml,250 ml,20,,130
-8464,Apicream corporal 500 ml,500 ml,13,,250
-8784,Apicream Facial 200 g,200 g,19,,250
-8495,Apilabial Cereza 4 g,4 g,48,,40
-8471,Apilabial Natural 4 g,4 g,18,,40
-8563,Suabeemiel Shampoo 60 ml,60 ml,0,Descontinuado,30
-8587,Suabeemiel Shampoo 250 ml,250 ml,38,,75
-8699,Suabeemiel Shampoo 500 ml,500 ml,0,Falta Kardex,150
-8779,Apigel Amarillo FX 250 g,250 g,10,,50
-8783,Apigel Azul FX 250 g,250 g,12,,50
-8761,Propyroll caballero 55 ml,55 ml,59,,60
-8701,Propyroll dama 55 ml,55 ml,39,,60
-8718,Suabeemiel jabón propóleo 100 g,100 g,24,,50
-8719,Suabeemiel Jabón Jalea Real 100 g,100 g,2,,50
-8720,Suabeemiel Jabón Miel 100 g,100 g,13,,50
-8721,Suabeemiel Jabón Chocolate 100 g,100 g,7,,50
-8525,Abeejón 60 g,60 g,15,,80
-8532,Apivick 30 g,30 g,15,,40
-8785,Cera capilar 80 g,80 g,11,,65
-8600,Kit Suaabeemiel Jabón 2 x 100 g,2x100 g,0,Descontinuado,120
-8723,Mermymiel 4 x 35 g,4x35 g,16,,135
-8730,Kit Miel 4 x 35 g,4x35 g,7,,130
-8655,Kit Mermymiel 3 x 300 g,3x300 g,0,,325
-8662,Kit Miel 3 x 300 g,3x300 g,0,,310
-8756,Kit Miel 3x35g,3x35g,0,Descontinuado,100
-8738,Kit Mermymiel 3x35 g,3x35 g,0,Descontinuado,100
-8630,Kit Mermymiel 1 x 300 g,1x300 g,0,Descontinuado,120
+Codigo,Nombre del producto,Categoria,Presentacion,Cantidad en almacen,Observaciones,Precio Producto al Publico
+8204,Miel Multiflora 35 g,Miel,35 g,70,,25
+8142,Miel Mezquite 35 g,Miel,35 g,44,,25
+8129,Miel Acahual 35 g,Miel,35 g,72,,25
+8181,Miel Azahar 35 g,Miel,35 g,62,,25
+8273,Miel Manglar 35 g,Miel,35 g,70,,25
+8242,Miel Aguacate 35 g,Miel,35 g,57,,25
+8243,Miel Eucalipto 35 g,Miel,35 g,69,,25
+8247,Miel Dzidzilché 35 g,Miel,35 g,56,,25
+8274,Miel Chayotillo 35 g,Miel,35 g,38,,25
+8044,Miel Multiflora 300 g,Miel,300 g,34,,85
+8068,Miel Mezquite 300 g,Miel,300 g,34,,85
+8082,Miel Acahual 300 g,Miel,300 g,25,,85
+8174,Miel Azahar 300 g,Miel,300 g,16,,85
+8099,Miel Manglar 300 g,Miel,300 g,29,,85
+8235,Miel Aguacate 300 g,Miel,300 g,30,,85
+8244,Miel Eucalipto 300 g,Miel,300 g,8,,85
+8248,Miel Dzidzilché 300 g,Miel,300 g,31,,85
+8275,Miel Chayotillo 300 g,Miel,300 g,0,Falta Kardex,85
+8051,Miel Multiflora 600 g,Miel,600 g,65,,170
+8075,Miel Mezquite 600 g,Miel,600 g,17,,170
+8112,Miel Acahual 600 g,Miel,600 g,16,,170
+8167,Miel Azahar 600 g,Miel,600 g,26,,170
+8266,Miel Manglar 600 g,Miel,600 g,18,,170
+8228,Miel Aguacate 600 g,Miel,600 g,28,,170
+8245,Miel Eucalipto 600 g,Miel,600 g,18,,170
+8249,Miel Dzidzilché 600 g,Miel,600 g,17,,170
+8276,Miel Chayotillo 600 g,Miel,600 g,2,,170
+8198,Miel Multiflora 1300 g,Miel,1300 g,13,,300
+8136,Miel Mezquite 1300 g,Miel,1300 g,12,,300
+8105,Miel Acahual 1300 g,Miel,1300 g,24,,300
+8150,Miel Azahar 1300 g,Miel,1300 g,0,,300
+8259,Miel Manglar 1300g,Miel,1300g,7,,300
+8211,Miel Aguacate 1300 g,Miel,1300 g,26,,300
+8246,Miel Eucalipto 1300 g,Miel,1300 g,10,,300
+8250,Miel Dzidzilché 1300 g,Miel,1300 g,8,,300
+8277,Miel Chayotillo 1300 g,Miel,1300 g,0,,300
+8692,Miel en Panal 350 g,Miel,350 g,19,,130
+8693,Miel Melipona 25 ml,Miel,25 ml,0,Falta Kardex,70
+8690,Jalea Real 30 g,Miel,30 g,0,Falta Kardex,120
+8794,Panal en Charola,Miel,100 g - 400 g,8,No tiene costo fijo,100
+8732,Miel en Pet 1 L,Miel,1350 g,3,,0
+8733,PET 1/2,Miel,650 g,2,,0
+8310,Beenergético 35 g,Derivados Miel,35 g,115,,40
+8037,Beenergético 150 g,Derivados Miel,150 g,41,,125
+8303,Beenergético 300 g,Derivados Miel,300 g,13,,240
+8040,Choco-bee Beenergetico 35 g,Derivados Miel,35 g,51,,45
+8039,Choco-bee Beenergetico 150 g,Derivados Miel,150 g,10,,130
+8038,Choco-bee Beenergetico 300 g,Derivados Miel,300 g,25,,250
+8297,Chamiel 35 g,Derivados Miel,35 g,29,,25
+8703,Chamiel 150 g,Derivados Miel,150 g,34,,55
+8020,Chamiel 290 g,Derivados Miel,290 g,17,,80
+8280,Chamiel 500 g,Derivados Miel,500 g,0,Falta Kardex,150
+8725,Chamiel 1100 g,Derivados Miel,1100 g,0,Falta Kardex,290
+8334,Mermymiel Guayaba 35 g,Derivados Miel,35 g,144,,25
+8365,Mermymiel fresa 35 g,Derivados Miel,35 g,112,,25
+8389,Mermymiel piña 35 g,Derivados Miel,35 g,95,,25
+8419,Mermymiel M.C. 35 g,Derivados Miel,35 g,49,,25
+8327,Mermymiel Guayaba 150 g,Derivados Miel,150 g,35,,60
+8358,Mermymiel fresa 150 g,Derivados Miel,150 g,62,,60
+8372,Mermymiel Piña 150 g,Derivados Miel,150 g,50,,60
+8402,Mermymiel M.C. 150 g,Derivados Miel,150 g,56,,60
+8777,Mermymiel Navideña 150 g,Derivados Miel,150g,42,,60
+8013,Mermymiel Guayaba 300 g,Derivados Miel,300 g,37,,100
+8341,Mermymiel fresa 300 g,Derivados Miel,300 g,18,,100
+8006,Mermymiel Piña 300g,Derivados Miel,300g,103,,100
+8396,Mermymiel M.C. 300 g,Derivados Miel,300 g,30,,100
+8778,Mermymiel Navideña 300 g,Derivados Miel,300 g,67,,110
+8689,Gomitas 100 g,Dulceria,100 g,54,,30
+8694,Paletas Miel,Dulceria,Pza,969,,5
+8695,Paletas Propoleo,Dulceria,Pza,589,,5
+8696,Perlas de miel 100 g,Dulceria,100 g,64,,30
+8710,Perlas Propoleo 100 g,Dulceria,100 g,28,,30
+8697,Popotes Miel,Dulceria,Pza,74,,5
+8712,Popotes propoleo,Dulceria,Pza,0,,5
+8713,Popotes miel con chile,Dulceria,Pza,323,,5
+8714,Ventas a granel perlas propoleo 1 Kg,Dulceria,Kg,20,,0
+8556,Propóleo Spray 30 ml,Derivados Colmena,30 ml,1,,100
+8698,Propymiel 200 g,Derivados Colmena,200 g,7,,140
+8549,Propóleo Gotas 30 ml,Derivados Colmena,30 ml,14,,100
+8426,Polen 170 g,Derivados Colmena,170 g,0,Falta Kardex,130
+8433,Polen 85 g,Derivados Colmena,85 g,4,,70
+8440,Apicream corporal 60 ml,Embellece,60 ml,0,Descontinuado,60
+8457,Apicream corporal 250 ml,Embellece,250 ml,20,,130
+8464,Apicream corporal 500 ml,Embellece,500 ml,13,,250
+8784,Apicream Facial 200 g,Embellece,200 g,19,,250
+8495,Apilabial Cereza 4 g,Embellece,4 g,48,,40
+8471,Apilabial Natural 4 g,Embellece,4 g,18,,40
+8563,Suabeemiel Shampoo 60 ml,Embellece,60 ml,0,Descontinuado,30
+8587,Suabeemiel Shampoo 250 ml,Embellece,250 ml,38,,75
+8699,Suabeemiel Shampoo 500 ml,Embellece,500 ml,0,Falta Kardex,150
+8779,Apigel Amarillo FX 250 g,Embellece,250 g,10,,50
+8783,Apigel Azul FX 250 g,Embellece,250 g,12,,50
+8761,Propyroll caballero 55 ml,Embellece,55 ml,59,,60
+8701,Propyroll dama 55 ml,Embellece,55 ml,39,,60
+8718,Suabeemiel jabón propóleo 100 g,Embellece,100 g,24,,50
+8719,Suabeemiel Jabón Jalea Real 100 g,Embellece,100 g,2,,50
+8720,Suabeemiel Jabón Miel 100 g,Embellece,100 g,13,,50
+8721,Suabeemiel Jabón Chocolate 100 g,Embellece,100 g,7,,50
+8525,Abeejón 60 g,Embellece,60 g,15,,80
+8532,Apivick 30 g,Embellece,30 g,15,,40
+8785,Cera capilar 80 g,Embellece,80 g,11,,65
+8600,Kit Suaabeemiel Jabón 2 x 100 g,Kits,2x100 g,0,Descontinuado,120
+8723,Mermymiel 4 x 35 g,Kits,4x35 g,16,,135
+8730,Kit Miel 4 x 35 g,Kits,4x35 g,7,,130
+8655,Kit Mermymiel 3 x 300 g,Kits,3x300 g,0,,325
+8662,Kit Miel 3 x 300 g,Kits,3x300 g,0,,310
+8756,Kit Miel 3x35g,Kits,3x35g,0,Descontinuado,100
+8738,Kit Mermymiel 3x35 g,Kits,3x35 g,0,Descontinuado,100
+8630,Kit Mermymiel 1 x 300 g,Kits,1x300 g,0,Descontinuado,120

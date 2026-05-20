@@ -1,75 +1,136 @@
+"""
+Importa inventarioAbril.csv al nuevo esquema:
+  - productos: una fila por SKU único
+  - lotes: una fila por fila del CSV (cada fila es un lote)
+"""
 import csv
 import sqlite3
-from datetime import datetime
+
+CSV_FILE = 'inventarioAbril.csv'
+DB_FILE  = 'inventario.db'
 
 try:
-    #IMPORTAR EL CSV Y EXTRAER LOS DATOS
-    with open('inventariocsvb.csv','r') as fin:
+    # ── Leer CSV ──────────────────────────────────────────────
+    with open(CSV_FILE, 'r', encoding='latin-1') as fin:
         dr = csv.DictReader(fin)
-        info = [(i['Codigo'], i['Nombre del producto'], i['Categoria'], i['Presentacion'],i['Cantidad en almacen'],i['Observaciones'],i['Precio Producto al Publico'])for i in dr]
-        print(info)
-    #conexión a sqlite
-    sqliteConnection = sqlite3.connect('inventario.db')
-    cursor = sqliteConnection.cursor()
+        filas = list(dr)
+    print(f"{len(filas)} filas leídas del CSV")
 
-    #crear la tabla
-    cursor.execute("""
+    # ── Conectar y crear tablas ───────────────────────────────
+    conn = sqlite3.connect(DB_FILE)
+    conn.execute("PRAGMA foreign_keys = ON")
+    cur  = conn.cursor()
+
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS productos (
-            id        INTEGER PRIMARY KEY AUTOINCREMENT,
-            sku       INTEGER NOT NULL,
-            nombre    TEXT NOT NULL,
-            categoria TEXT NOT NULL,
-            presentacion TEXT NOT NULL,
-            stock     INTEGER DEFAULT 0,
-            precio    REAL NOT NULL,
-            caducidad TEXT,
-            barcode   TEXT,
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            sku           TEXT NOT NULL UNIQUE,
+            nombre        TEXT NOT NULL,
+            categoria     TEXT NOT NULL,
+            presentacion  TEXT NOT NULL,
+            precio        REAL DEFAULT 0,
+            barcode       TEXT,
             observaciones TEXT
         )
     """)
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS movimientos (
-            id         INTEGER PRIMARY KEY AUTOINCREMENT,
-            sku         INTEGER NOT NULL,
-            producto_id INTEGER NOT NULL,
-            tipo       TEXT NOT NULL,  -- 'entrada' o 'salida'
-            categoria TEXT NOT NULL,
-            cantidad   INTEGER NOT NULL,
-            fecha      TEXT NOT NULL,
-            nota       TEXT,
-            FOREIGN KEY (producto_id) REFERENCES productos(id),
-            FOREIGN KEY (sku) REFERENCES productos(sku),
-            FOREIGN KEY (categoria) REFERENCES productos(categoria)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS lotes (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            producto_id  INTEGER NOT NULL,
+            numero_lote  TEXT NOT NULL,
+            trazabilidad TEXT,
+            caducidad    TEXT,
+            stock        INTEGER DEFAULT 0,
+            FOREIGN KEY (producto_id) REFERENCES productos(id)
         )
     """)
-    #insert data 
-    cursor.executemany(
-        """
-        INSERT INTO productos (sku, nombre, categoria, presentacion, stock, observaciones, precio)
-        VALUES (?,?,?,?,?,?,?)
-    """,info)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS movimientos (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            producto_id INTEGER NOT NULL,
+            lote_id     INTEGER NOT NULL,
+            tipo        TEXT NOT NULL,
+            categoria   TEXT NOT NULL,
+            cantidad    INTEGER NOT NULL,
+            fecha       TEXT NOT NULL,
+            nota        TEXT,
+            FOREIGN KEY (producto_id) REFERENCES productos(id),
+            FOREIGN KEY (lote_id)     REFERENCES lotes(id)
+        )
+    """)
+    conn.commit()
 
-    #cursor.execute(
-     #   """
-      #  INSERT INTO movimientos (sku,producto_id,tipo,categoria,cantidad,fecha,nota)
-        #VALUES (?,?,?,?,?,?,?)
-    #"""#(1111,1111,'entrada',0000,datetime.now().strftime("%Y-%m-%d %H:%M"),"Vaciado excel")
-    #) 
+    # ── Insertar filas ────────────────────────────────────────
+    productos_insertados = 0
+    lotes_insertados     = 0
+    errores              = []
 
-    #mostrar la tabla
-    cursor.execute("select * from productos;")
+    for idx, row in enumerate(filas, start=2):  # fila 2 = primera de datos
+        try:
+            sku    = str(row['Codigo']).strip()
+            nombre = row['Nombre del producto'].strip()
+            precio = float(str(row['Precio']).replace(',', '.') or 0)
+            stock  = int(str(row['Cantidad en almacen']).replace(',', '') or 0)
 
-    result = cursor.fetchall()
-    print(result)
+            # ── Producto: insertar solo si el SKU no existe ───
+            cur.execute("SELECT id FROM productos WHERE sku=?", (sku,))
+            prod = cur.fetchone()
+            if prod is None:
+                cur.execute("""
+                    INSERT INTO productos
+                        (sku, nombre, categoria, presentacion, precio, barcode, observaciones)
+                    VALUES (?,?,?,?,?,?,?)
+                """, (
+                    sku, nombre,
+                    row['Categoria'].strip(),
+                    row['Presentacion'].strip(),
+                    precio,
+                    '',  # barcode no está en el CSV
+                    row['Observaciones'].strip()
+                ))
+                producto_id = cur.lastrowid
+                productos_insertados += 1
+            else:
+                producto_id = prod[0]
 
-    #commit y cerrar conexión
-    sqliteConnection.commit()
-    cursor.close()
+            # ── Lote ──────────────────────────────────────────
+            numero_lote  = str(row['Lotes']).strip()
+            trazabilidad = str(row['Trazabilidad']).strip()
+            caducidad    = str(row['Fecha de caducidad']).strip()
 
-except sqlite3.Error as error:
-    print('Error occurred - ', error)
+            cur.execute("""
+                INSERT INTO lotes (producto_id, numero_lote, trazabilidad, caducidad, stock)
+                VALUES (?,?,?,?,?)
+            """, (producto_id, numero_lote, trazabilidad, caducidad, stock))
+            lotes_insertados += 1
+
+        except Exception as e:
+            errores.append(f"Fila {idx}: {e} → {dict(row)}")
+
+    conn.commit()
+
+    # ── Resumen ───────────────────────────────────────────────
+    print(f"\n✔ Productos insertados/encontrados: {productos_insertados} nuevos")
+    print(f"✔ Lotes insertados:                 {lotes_insertados}")
+
+    if errores:
+        print(f"\n⚠ {len(errores)} errores:")
+        for e in errores:
+            print(" ", e)
+    else:
+        print("\n✔ Sin errores.")
+
+    # Verificación rápida
+    total_p = cur.execute("SELECT COUNT(*) FROM productos").fetchone()[0]
+    total_l = cur.execute("SELECT COUNT(*) FROM lotes").fetchone()[0]
+    print(f"\nBD final → productos: {total_p}, lotes: {total_l}")
+
+except Exception as err:
+    print("Error general:", err)
 
 finally:
-    if sqliteConnection:
-        sqliteConnection.close()
-        print('SQLite Connection closed')
+    try:
+        conn.close()
+        print("Conexión cerrada.")
+    except Exception:
+        pass

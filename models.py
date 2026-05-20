@@ -191,6 +191,12 @@ def registrar_movimiento(sku, trazabilidad, tipo, cantidad, nota=""):
     elif tipo == "salida":
         conn.execute("UPDATE lotes SET stock = stock - ? WHERE id=?",
                      (cantidad, lote_id))
+        # Si el lote quedó en 0, eliminarlo automáticamente
+        stock_restante = conn.execute(
+            "SELECT stock FROM lotes WHERE id=?", (lote_id,)
+        ).fetchone()[0]
+        if stock_restante == 0:
+            conn.execute("DELETE FROM lotes WHERE id=?", (lote_id,))
 
     conn.commit()
     conn.close()

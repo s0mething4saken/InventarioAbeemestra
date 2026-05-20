@@ -228,7 +228,7 @@ def construir_ventana():
         tk.Label(popup, text=p[2], font=("Arial", 14, "bold"), bg=bg).grid(
             row=0, column=0, columnspan=4, pady=(12,2), padx=14)
         tk.Label(popup, text=f"SKU: {p[1]}   Categoría: {p[3]}   Stock total: {int(p[5] or 0)}",
-                 font=("Arial", 10), bg=bg, fg="#555").grid(
+                 font=("Arial", 12, "bold"), bg=bg, fg="#333").grid(
                  row=1, column=0, columnspan=4, **P)
 
         ttk.Separator(popup, orient="horizontal").grid(
@@ -246,9 +246,15 @@ def construir_ventana():
                 row=row, column=col_ent, sticky="w", **P)
             return v
 
-        v_precio = lbl_entry(4, 0, 1, "Precio",        p[6])
+        v_precio  = lbl_entry(4, 0, 1, "Precio",        p[6])
         v_barcode = lbl_entry(4, 2, 3, "Código barras", p[8])
         v_obs     = lbl_entry(5, 0, 1, "Observaciones", p[9])
+
+        # Nº Lote = cantidad de trazabilidades (solo lectura, se actualiza automáticamente)
+        tk.Label(popup, text="Nº Lote:", font=F, bg=bg, anchor="e", width=14).grid(
+            row=5, column=2, sticky="e", **P)
+        lbl_n_lotes_val = tk.Label(popup, text="", font=F, bg=bg, anchor="w")
+        lbl_n_lotes_val.grid(row=5, column=3, sticky="w", **P)
 
         lbl_prod_ok = tk.Label(popup, text="", font=("Arial", 10), bg=bg)
         lbl_prod_ok.grid(row=6, column=0, columnspan=2, sticky="w", padx=14)
@@ -278,20 +284,23 @@ def construir_ventana():
         frame_lotes = tk.Frame(popup, bg=bg)
         frame_lotes.grid(row=9, column=0, columnspan=4, padx=14, pady=4, sticky="ew")
 
-        cols_l = ("ID", "Nº Lote", "Trazabilidad", "Caducidad", "Stock")
-        anchos_l = {"ID": 40, "Nº Lote": 100, "Trazabilidad": 120,
-                    "Caducidad": 110, "Stock": 70}
+        cols_l = ("ID", "Trazabilidad", "Caducidad", "Stock")
+        anchos_l = {"ID": 40, "Trazabilidad": 170, "Caducidad": 120, "Stock": 80}
         tabla_lotes = ttk.Treeview(frame_lotes, columns=cols_l, show="headings", height=6)
-        for c in cols_l:
-            tabla_lotes.heading(c, text=c)
-            tabla_lotes.column(c, width=anchos_l.get(c, 100), anchor="center")
+        for col_l in cols_l:
+            tabla_lotes.heading(col_l, text=col_l)
+            tabla_lotes.column(col_l, width=anchos_l.get(col_l, 100), anchor="center")
         tabla_lotes.pack(fill="x")
 
         def recargar_lotes():
             tabla_lotes.delete(*tabla_lotes.get_children())
-            for l in obtener_lotes_por_producto(producto_id):
+            lotes = obtener_lotes_por_producto(producto_id)
+            # Actualiza Nº Lote (= cantidad de trazabilidades registradas)
+            lbl_n_lotes_val.config(text=str(len(lotes)))
+            for l in lotes:
+                # l: id[0], numero_lote[1], trazabilidad[2], caducidad[3], stock[4]
                 tabla_lotes.insert("", "end", iid=str(l[0]),
-                                   values=(l[0], l[1], l[2] or "-", l[3] or "-", l[4]))
+                                   values=(l[0], l[2] or "-", l[3] or "-", l[4]))
 
         recargar_lotes()
 
@@ -303,15 +312,15 @@ def construir_ventana():
                                          font=F, bg=bg, padx=8, pady=6)
         frame_edit_lote.grid(row=10, column=0, columnspan=4, padx=14, pady=4, sticky="ew")
 
-        campos_l_edit = ["Nº Lote", "Trazabilidad", "Caducidad", "Stock"]
+        campos_l_edit = ["Trazabilidad", "Caducidad", "Stock"]
         vars_lote = {}
-        for i, c in enumerate(campos_l_edit):
-            tk.Label(frame_edit_lote, text=c+":", font=F, bg=bg).grid(
+        for i, campo_e in enumerate(campos_l_edit):
+            tk.Label(frame_edit_lote, text=campo_e+":", font=F, bg=bg).grid(
                 row=0, column=i*2, sticky="e", padx=(6,0))
             v = tk.StringVar()
             tk.Entry(frame_edit_lote, textvariable=v, font=F, width=12).grid(
                 row=0, column=i*2+1, padx=(2,8))
-            vars_lote[c] = v
+            vars_lote[campo_e] = v
 
         lote_editando_id = [None]  # lista para mutabilidad en closure
 
@@ -320,11 +329,11 @@ def construir_ventana():
             if not sel:
                 return
             vals = tabla_lotes.item(sel)["values"]
+            # vals: ID[0], Trazabilidad[1], Caducidad[2], Stock[3]
             lote_editando_id[0] = vals[0]
-            vars_lote["Nº Lote"].set(vals[1])
-            vars_lote["Trazabilidad"].set("" if vals[2] == "-" else vals[2])
-            vars_lote["Caducidad"].set("" if vals[3] == "-" else vals[3])
-            vars_lote["Stock"].set(vals[4])
+            vars_lote["Trazabilidad"].set("" if vals[1] == "-" else vals[1])
+            vars_lote["Caducidad"].set("" if vals[2] == "-" else vals[2])
+            vars_lote["Stock"].set(vals[3])
             lbl_lote_status.config(text="✏️ Editando lote seleccionado", fg="#1565c0")
 
         tabla_lotes.bind("<ButtonRelease-1>", cargar_lote_en_form)
@@ -335,22 +344,26 @@ def construir_ventana():
                 v.set("")
             lbl_lote_status.config(text="")
 
+        def _siguiente_numero_lote():
+            return str(len(obtener_lotes_por_producto(producto_id)) + 1)
+
         def guardar_lote():
-            nro = vars_lote["Nº Lote"].get().strip()
-            if not nro:
-                lbl_lote_status.config(text="⚠ Nº Lote es obligatorio", fg="red")
-                return
             try:
                 stk = int(vars_lote["Stock"].get() or 0)
             except ValueError:
                 lbl_lote_status.config(text="⚠ Stock debe ser entero", fg="red")
                 return
             if lote_editando_id[0]:
+                lote_orig = next(
+                    (l for l in obtener_lotes_por_producto(producto_id)
+                     if l[0] == lote_editando_id[0]), None)
+                nro = lote_orig[1] if lote_orig else _siguiente_numero_lote()
                 actualizar_lote(lote_editando_id[0], nro,
                                 vars_lote["Trazabilidad"].get().strip(),
                                 vars_lote["Caducidad"].get().strip(), stk)
                 lbl_lote_status.config(text="✔ Lote actualizado", fg="#2e7d32")
             else:
+                nro = _siguiente_numero_lote()
                 agregar_lote(producto_id, nro,
                              vars_lote["Trazabilidad"].get().strip(),
                              vars_lote["Caducidad"].get().strip(), stk)
